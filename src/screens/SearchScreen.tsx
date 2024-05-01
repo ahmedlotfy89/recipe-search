@@ -18,7 +18,7 @@ export class SearchScreen extends Component<
     super(props);
     this.state = { recipes: [] };
   }
-  
+
   getRecipes(params: object) {
     api
       .get<SearchResponse>("search", params)
@@ -39,8 +39,9 @@ export class SearchScreen extends Component<
   }
 
   render() {
-    const resultList = this.state.recipes.map((recipe, index) => 
-      <Text key={index}> {recipe.label}</Text>);
+    const resultList = this.state.recipes.map((recipe, index) => (
+      <Text key={index}> {recipe.label}</Text>
+    ));
 
     return (
       <View>
