@@ -1,11 +1,12 @@
 module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-    ],
-    extends: [
-      '@react-native-community',
-      'plugin:@typescript-eslint/recommended',
-    ],
-  };
+  parser: "babel-eslint",
+  plugins: ["react", "react-native"],
+  env: {
+    "react-native/react-native": true,
+  },
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+  ]
+};

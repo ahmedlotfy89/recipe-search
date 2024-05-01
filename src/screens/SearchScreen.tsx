@@ -14,10 +14,11 @@ export class SearchScreen extends Component<
   SearchScreenProps,
   SearchScreenState
 > {
-  constructor(props: any) {
+  constructor(props: object) {
     super(props);
     this.state = { recipes: [] };
   }
+  
   getRecipes(params: object) {
     api
       .get<SearchResponse>("search", params)

@@ -1,7 +1,7 @@
+import React, { Component } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import SearchScreen from './src/screens/SearchScreen';
-import { Component } from 'react';
 
 export default class App extends Component {
   render() {
