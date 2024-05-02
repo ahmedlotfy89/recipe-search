@@ -1,16 +1,63 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { Recipe } from "../models/Recipe";
-
 interface DetailsScreenProps {
-  recipe: Recipe;
+  route: {
+    params: {
+      recipe: Recipe;
+    };
+  };
 }
 
 export default class DetailsScreen extends Component<DetailsScreenProps> {
+  constructor(props: DetailsScreenProps) {
+    super(props);
+  }
+
+  handleWebsitePressed = () => {
+    Linking.canOpenURL(this.props.route.params.recipe.url).then((supported) => {
+      if (supported) {
+        Linking.openURL(this.props.route.params.recipe.url);
+      } else {
+        console.log(
+          "Error on opening URL: " + this.props.route.params.recipe.url
+        );
+      }
+    });
+  };
+
+  caloriesAndWeight() {
+    console.log(this.props.route.params.recipe);
+    const calories = this.props.route.params.recipe.calories;
+    const totalWeight = this.props.route.params.recipe.totalWeight;
+    return calories + `/` + totalWeight;
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Recipe Title...</Text>
+        <Image
+          style={styles.image}
+          source={{ uri: this.props.route.params.recipe.image }}
+        />
+        <Text style={styles.title}>{this.props.route.params.recipe.label}</Text>
+        <Text style={styles.text}>Calories: {this.caloriesAndWeight()}</Text>
+        <Text style={styles.text}>
+          Total Time: {this.props.route.params.recipe.totalTime}
+        </Text>
+        <TouchableOpacity
+          style={styles.bottomView}
+          onPress={this.handleWebsitePressed}
+        >
+          <Text style={styles.buttonText}>Recipe Website</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -20,7 +67,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  image: {
+    width: "100%",
+    height: "30%",
+  },
+  title: {
+    fontSize: 23,
+    margin: 8,
+  },
+  text: {
+    fontSize: 18,
+    margin: 8,
+  },
+  bottomView: {
+    width: "90%",
+    height: 50,
+    backgroundColor: "#EE5407",
     justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
   },
 });

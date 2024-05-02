@@ -3,6 +3,7 @@ export type Recipe = {
   label: string;
   source: string;
   calories: number;
+  totalWeight: number;
   totalTime: number;
   url: string;
 };
