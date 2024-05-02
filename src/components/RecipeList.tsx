@@ -6,6 +6,7 @@ import RecipeRow from "./RecipeRow";
 interface RecipeListProps {
   recipes: Recipe[];
   didSelectRecipe: (recipe: Recipe) => void;
+  loadMoreRecipes: () => void;
 }
 
 export default class RecipeList extends Component<RecipeListProps> {
@@ -39,6 +40,8 @@ export default class RecipeList extends Component<RecipeListProps> {
         keyExtractor={(recipe, index) => this.recipeItemKey(recipe, index)}
         ItemSeparatorComponent={this.itemSeparator}
         showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0}
+        onEndReached={() => this.props.loadMoreRecipes()}
       />
     );
   }
@@ -47,7 +50,7 @@ export default class RecipeList extends Component<RecipeListProps> {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    backgroundColor: "rgba(20,40,60,0.5)",
+    backgroundColor: "#4a707a",
   },
   separator: {
     height: 2,

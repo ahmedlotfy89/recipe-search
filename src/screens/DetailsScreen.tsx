@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  View,
+  SafeAreaView,
   Text,
   Image,
   TouchableOpacity,
@@ -35,13 +35,15 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
 
   caloriesAndWeight() {
     const calories = this.props.route.params.recipe.calories;
+    const roundCalories = Math.round(calories * 100) / 100;
     const totalWeight = this.props.route.params.recipe.totalWeight;
-    return "Calories:" + "\n" + calories + ` / ` + totalWeight;
+    const roundWeight = Math.round(totalWeight * 100) / 100;
+    return "Calories: " + roundCalories + ` / ` + roundWeight;
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Image
           style={styles.image}
           source={{ uri: this.props.route.params.recipe.image }}
@@ -57,7 +59,7 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
         >
           <Text style={styles.buttonText}>Recipe Website</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -65,7 +67,7 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#ccc",
     justifyContent: "flex-start",
   },
   image: {
