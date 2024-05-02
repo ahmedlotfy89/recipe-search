@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+  View,
+} from "react-native";
 import { Recipe } from "../models/Recipe";
 import api from "../api/api";
-import { catchError, of, take } from "rxjs";
+import { catchError, count, of, take } from "rxjs";
 import { SearchResponse } from "../models/SearchResponse";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
@@ -20,7 +25,10 @@ interface SearchScreenState {
   filter: string;
   loading: boolean;
   loadingExtraData: boolean;
-  page: number;
+  from: number;
+  to: number;
+  count: number;
+  pageSize: number;
 }
 
 export default class SearchScreen extends Component<
@@ -35,7 +43,10 @@ export default class SearchScreen extends Component<
       filter: Filter.all,
       loading: false,
       loadingExtraData: false,
-      page: 1,
+      from: 0,
+      to: 10,
+      count: Number.MAX_VALUE,
+      pageSize: 10,
     };
   }
 
@@ -53,16 +64,16 @@ export default class SearchScreen extends Component<
           );
           this.setState({
             recipes:
-              this.state.page === 1
-                ? recipes
-                : [...this.state.recipes, ...recipes],
+              this.state.to > this.state.pageSize
+                ? [...this.state.recipes, ...recipes]
+                : recipes,
+            to: response.to,
+            from: response.from,
+            count: response.count,
+            loading: false,
           });
         }
       });
-  }
-
-  loadMoreRecipe() {
-    this.setState({ page: this.state.page + 1 });
   }
 
   mapToRecipe(recipe: Recipe) {
@@ -77,12 +88,12 @@ export default class SearchScreen extends Component<
   }
 
   handleSearch(text: string) {
+    this.setState({ searchText: text, recipes: [], loading: true });
     this.getRecipes({ q: text });
-    this.setState({ searchText: text });
   }
 
   handleFilter(filter: string) {
-    this.setState({ filter });
+    this.setState({ filter, recipes: [], loading: true });
     if (this.state.searchText.length === 0) {
       return;
     }
@@ -90,6 +101,22 @@ export default class SearchScreen extends Component<
     this.getRecipes({
       q: this.state.searchText,
       ...getFilterApiKey(filter as Filter),
+    });
+  }
+
+  handleLoadMore() {
+    const from = this.state.to;
+    const to = Math.min(this.state.to + this.state.pageSize, this.state.count);
+    if (to <= from || from > this.state.count) {
+      return;
+    }
+
+    this.setState({ from, to, loading: true });
+    this.getRecipes({
+      q: this.state.searchText,
+      ...getFilterApiKey(this.state.filter as Filter),
+      from,
+      to,
     });
   }
 
@@ -101,7 +128,7 @@ export default class SearchScreen extends Component<
           this.navigateToDetails(recipe);
         }}
         loadMoreRecipes={() => {
-          console.log("Load More");
+          this.handleLoadMore();
         }}
       />
     );
@@ -119,6 +146,9 @@ export default class SearchScreen extends Component<
           didFilter={(text) => this.handleFilter(text)}
         />
         {this.renderRecipeList()}
+        <View style={styles.footer}>
+          {this.state.loading && <ActivityIndicator />}
+        </View>
       </SafeAreaView>
     );
   }
@@ -130,5 +160,8 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "flex-start",
     backgroundColor: "#94b0b7",
+  },
+  footer: {
+    height: 20,
   },
 });
