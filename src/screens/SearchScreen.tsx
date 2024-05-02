@@ -4,11 +4,7 @@ import { Recipe } from "../models/Recipe";
 import api from "../api/api";
 import { catchError, of, take } from "rxjs";
 import { SearchResponse } from "../models/SearchResponse";
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from "@react-navigation/native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 import RecipeList from "../components/RecipeList";
 
@@ -19,7 +15,7 @@ interface SearchScreenState {
   recipes: Recipe[];
 }
 
-export class SearchScreen extends Component<
+export default class SearchScreen extends Component<
   SearchScreenProps,
   SearchScreenState
 > {
@@ -46,8 +42,9 @@ export class SearchScreen extends Component<
   }
 
   mapToRecipe(recipe: Recipe) {
-    const { label, image, source, calories, totalTime, url } = recipe;
-    return { label, image, source, totalTime, calories, url };
+    const { label, image, source, calories, totalWeight, totalTime, url } =
+      recipe;
+    return { label, image, source, calories, totalWeight, totalTime, url };
   }
 
   componentDidMount(): void {
@@ -83,8 +80,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-export default function (props: any) {
-  const navigation = useNavigation();
-  return <SearchScreen {...props} navigation={navigation} />;
-}
