@@ -38,6 +38,7 @@ export default class RecipeList extends Component<RecipeListProps> {
         renderItem={(recipe) => this.renderItemComponent(recipe)}
         keyExtractor={(recipe, index) => this.recipeItemKey(recipe, index)}
         ItemSeparatorComponent={this.itemSeparator}
+        showsVerticalScrollIndicator={false}
       />
     );
   }

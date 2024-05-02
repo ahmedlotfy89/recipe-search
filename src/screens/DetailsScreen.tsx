@@ -34,10 +34,9 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
   };
 
   caloriesAndWeight() {
-    console.log(this.props.route.params.recipe);
     const calories = this.props.route.params.recipe.calories;
     const totalWeight = this.props.route.params.recipe.totalWeight;
-    return calories + `/` + totalWeight;
+    return "Calories:" + "\n" + calories + ` / ` + totalWeight;
   }
 
   render() {
@@ -48,7 +47,7 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
           source={{ uri: this.props.route.params.recipe.image }}
         />
         <Text style={styles.title}>{this.props.route.params.recipe.label}</Text>
-        <Text style={styles.text}>Calories: {this.caloriesAndWeight()}</Text>
+        <Text style={styles.text}>{this.caloriesAndWeight()}</Text>
         <Text style={styles.text}>
           Total Time: {this.props.route.params.recipe.totalTime}
         </Text>
@@ -74,12 +73,15 @@ const styles = StyleSheet.create({
     height: "30%",
   },
   title: {
-    fontSize: 23,
+    fontSize: 20,
     margin: 8,
+    textAlign: "left",
   },
   text: {
-    fontSize: 18,
-    margin: 8,
+    fontSize: 15,
+    marginHorizontal: 8,
+    textAlign: "left",
+    lineHeight: 25,
   },
   bottomView: {
     width: "90%",
