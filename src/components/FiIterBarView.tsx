@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-  TouchableOpacity,
+  Pressable,
   View,
   Text,
   StyleSheet,
@@ -24,7 +24,7 @@ export default class FilterBarView extends Component<FilterViewProps> {
 
   renderFilterButton(filter: string) {
     return (
-      <TouchableOpacity
+      <Pressable
         style={[
           styles.filterItem,
           filter === this.props.filter && styles.selectedItem,
@@ -32,7 +32,7 @@ export default class FilterBarView extends Component<FilterViewProps> {
         onPress={() => this.handleChangeFilter(filter)}
       >
         <Text>{filter}</Text>
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 

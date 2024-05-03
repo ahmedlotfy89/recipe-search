@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { Recipe } from "../models/Recipe";
 
 interface RecipeRowProps {
@@ -10,7 +10,7 @@ interface RecipeRowProps {
 export default class RecipeRow extends Component<RecipeRowProps> {
   render() {
     return (
-      <TouchableOpacity style={styles.container} onPress={() => this.props.didSelectRecipe(this.props.recipe)} activeOpacity={1}>
+      <Pressable style={styles.container} onPress={() => this.props.didSelectRecipe(this.props.recipe)} >
         <View style={styles.imageView}>
           <Image
             style={styles.image}
@@ -21,7 +21,7 @@ export default class RecipeRow extends Component<RecipeRowProps> {
           <Text style={styles.title}>{this.props.recipe.label}</Text>
           <Text style={styles.source}>{this.props.recipe.source}</Text>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 }

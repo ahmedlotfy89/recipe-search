@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   Linking,
 } from "react-native";
 import { Recipe } from "../models/Recipe";
@@ -53,12 +53,12 @@ export default class DetailsScreen extends Component<DetailsScreenProps> {
         <Text style={styles.text}>
           Total Time: {this.props.route.params.recipe.totalTime}
         </Text>
-        <TouchableOpacity
+        <Pressable
           style={styles.bottomView}
           onPress={this.handleWebsitePressed}
         >
           <Text style={styles.buttonText}>Recipe Website</Text>
-        </TouchableOpacity>
+        </Pressable>
       </SafeAreaView>
     );
   }
