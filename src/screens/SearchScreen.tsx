@@ -18,6 +18,9 @@ interface SearchScreenState {
   recipes: Recipe[];
   searchText: string;
   filter: string;
+  loading: boolean;
+  loadingExtraData: boolean;
+  page: number;
 }
 
 export default class SearchScreen extends Component<
@@ -26,7 +29,14 @@ export default class SearchScreen extends Component<
 > {
   constructor(props: SearchScreenProps) {
     super(props);
-    this.state = { searchText: "", recipes: [], filter: Filter.all };
+    this.state = {
+      searchText: "",
+      recipes: [],
+      filter: Filter.all,
+      loading: false,
+      loadingExtraData: false,
+      page: 1,
+    };
   }
 
   getRecipes(params: object) {
@@ -41,9 +51,18 @@ export default class SearchScreen extends Component<
           const recipes = response.hits.map((hit) =>
             this.mapToRecipe(hit.recipe)
           );
-          this.setState({ recipes });
+          this.setState({
+            recipes:
+              this.state.page === 1
+                ? recipes
+                : [...this.state.recipes, ...recipes],
+          });
         }
       });
+  }
+
+  loadMoreRecipe() {
+    this.setState({ page: this.state.page + 1 });
   }
 
   mapToRecipe(recipe: Recipe) {
@@ -63,11 +82,15 @@ export default class SearchScreen extends Component<
   }
 
   handleFilter(filter: string) {
+    this.setState({ filter });
+    if (this.state.searchText.length === 0) {
+      return;
+    }
+
     this.getRecipes({
       q: this.state.searchText,
       ...getFilterApiKey(filter as Filter),
     });
-    this.setState({ filter });
   }
 
   renderRecipeList() {
@@ -76,6 +99,9 @@ export default class SearchScreen extends Component<
         recipes={this.state.recipes}
         didSelectRecipe={(recipe: Recipe) => {
           this.navigateToDetails(recipe);
+        }}
+        loadMoreRecipes={() => {
+          console.log("Load More");
         }}
       />
     );
@@ -103,6 +129,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "stretch",
     justifyContent: "flex-start",
-    backgroundColor: "#abf",
+    backgroundColor: "#94b0b7",
   },
 });

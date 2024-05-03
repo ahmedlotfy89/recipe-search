@@ -16,7 +16,7 @@ export default class SearchBarView extends Component<SearchBarProps> {
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.searchBar}
-          placeholderTextColor="black"
+          placeholderTextColor="gray"
           placeholder="Search.."
           value={this.props.text}
           onChangeText={(text: string) => this.props.didSearch(text)}
