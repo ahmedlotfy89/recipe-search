@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Recipe } from "../models/Recipe";
 import api from "../api/api";
-import { catchError, count, of, take } from "rxjs";
+import { catchError, of, take } from "rxjs";
 import { SearchResponse } from "../models/SearchResponse";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
